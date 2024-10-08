@@ -1,0 +1,152 @@
+
+    {%extends "base.html"%}
+    {%block head%}
+    <title>KATAN SILK SAREE - RAINBOW FASHION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='prod.css')}}">
+    {%endblock%}
+    {%block content%}
+  
+    <main>
+        
+        <div class="product-details">
+            <div class="product-images">
+                <div class="main-image">
+                    <img src="{{item['images'][0]}}"
+                        alt="Full view of the Abstract Breeze Dress on a model against a dark background" width="600"
+                        height="800">
+                </div>
+                
+                
+                <div class="thumbnail-images">
+                    {%for img in item['images']%}
+                
+                <div class="thumbnail active">
+                    <img src="{{img}}"
+                        alt="Thumbnail of full dress view" width="80" height="80">
+                </div>
+                {%endfor%}
+                    
+                    
+                </div>
+            </div>
+            <div class="product-info">
+                <h1 class="product-title">KATAN SILK SAREE</h1>
+                <p class="product-price"> &#x20B9; 1499</p>
+                <p class="product-description">Pure Katan Silk   Mayura Border   Super Soft & Premium Quality Gurranted  Party Wear & Gloshy Collection   All Total Dual Tone Colour Set   🍁With Banarasi Border Blouse Piece </p>
+                <div class="size-selection">
+                    <h3>Select Size:</h3>
+                    <div class="size-buttons">
+                        
+                        {%for s in item["size"]%}
+                        <button class="size-button">{{s}}</button>
+                        {%endfor%}
+                        
+
+                    </div>
+                </div>
+                <div class="quantity-selection">
+                    <h3>Quantity:</h3>
+                    <input type="number" class="quantity-input" value="1" min="1" max="10">
+                </div>
+                <a href="/checkout"><button class="buy-now">Buy Now</button></a>
+                <!-- <button class="add-to-cart">Add to Cart</button> -->
+                    
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2023 Rainbow FASHION. All rights reserved.</p>
+    </footer>
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navUl = document.querySelector('nav ul');
+
+        menuToggle.addEventListener('click', () => {
+            navUl.classList.toggle('show');
+            menuToggle.textContent = navUl.classList.contains('show') ? '✕' : '☰';
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest('nav') && !event.target.closest('.menu-toggle')) {
+                navUl.classList.remove('show');
+                menuToggle.textContent = '☰';
+            }
+        });
+
+        // Thumbnail image selection
+        const mainImage = document.querySelector('.main-image img');
+        const thumbnails = document.querySelectorAll('.thumbnail');
+
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener('click', () => {
+                mainImage.src = thumbnail.querySelector('img').src;
+                thumbnails.forEach(t => t.classList.remove('active'));
+                thumbnail.classList.add('active');
+            });
+        });
+
+        // Size selection
+        const sizeButtons = document.querySelectorAll('.size-button');
+
+        sizeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                sizeButtons.forEach(b => b.classList.remove('active'));
+                button.classList.add('active');
+            });
+        });
+
+        // Quantity input validation
+        const quantityInput = document.querySelector('.quantity-input');
+
+        quantityInput.addEventListener('change', () => {
+            let value = parseInt(quantityInput.value);
+            if (isNaN(value) || value < 1) {
+                quantityInput.value = 1;
+            } else if (value > 10) {
+                quantityInput.value = 10;
+            }
+        });
+
+        // Buy Now button
+        // const buyNowButton = document.querySelector('.buy-now');
+
+        // buyNowButton.addEventListener('click', () => {
+        //     const size = document.querySelector('.size-button.active').textContent;
+        //     const quantity = quantityInput.value;
+        //     alert(`Proceeding to checkout:\nProduct: Abstract Breeze Dress\nSize: ${size}\nQuantity: ${quantity}`);
+        // });
+
+        // Add to Cart button
+        const addToCartButton = document.querySelector('.add-to-cart');
+
+        addToCartButton.addEventListener('click', () => {
+            const size = document.querySelector('.size-button.active').textContent;
+            const quantity = quantityInput.value;
+            alert(`Added to cart:\nProduct: Abstract Breeze Dress\nSize: ${size}\nQuantity: ${quantity}`);
+
+            // Visual feedback
+            addToCartButton.textContent = 'Added to Cart!';
+            addToCartButton.style.backgroundColor = 'var(--secondary-color)';
+            addToCartButton.style.color = 'var(--background-color)';
+
+            setTimeout(() => {
+                addToCartButton.textContent = 'Add to Cart';
+                addToCartButton.style.backgroundColor = '';
+                addToCartButton.style.color = '';
+            }, 2000);
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+  {%endblock%}
